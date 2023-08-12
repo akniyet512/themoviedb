@@ -18,10 +18,10 @@ class Movie {
 }
 
 class MovieListWidget extends StatefulWidget {
-  MovieListWidget({Key? key}) : super(key: key);
+  const MovieListWidget({Key? key}) : super(key: key);
 
   @override
-  _MovieListWidgetState createState() => _MovieListWidgetState();
+  State createState() => _MovieListWidgetState();
 }
 
 class _MovieListWidgetState extends State<MovieListWidget> {
@@ -177,7 +177,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
     return Stack(
       children: [
         ListView.builder(
-          padding: EdgeInsets.only(top: 70),
+          padding: const EdgeInsets.only(top: 70),
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemCount: _filteredMovies.length,
           itemExtent: 163,
@@ -191,12 +191,12 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.black.withOpacity(0.2)),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
                           blurRadius: 8,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
@@ -204,26 +204,26 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                     child: Row(
                       children: [
                         Image(image: AssetImage(movie.imageName)),
-                        SizedBox(width: 15),
+                        const SizedBox(width: 15),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Text(
                                 movie.title,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontWeight: FontWeight.bold),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text(
                                 movie.time,
-                                style: TextStyle(color: Colors.grey),
+                                style: const TextStyle(color: Colors.grey),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Text(
                                 movie.description,
                                 maxLines: 2,
@@ -232,7 +232,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                             ],
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                       ],
                     ),
                   ),
@@ -256,7 +256,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
               labelText: 'Поиск',
               filled: true,
               fillColor: Colors.white.withAlpha(235),
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
             ),
           ),
         ),

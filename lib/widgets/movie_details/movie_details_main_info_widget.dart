@@ -10,29 +10,29 @@ class MovieDetailsMainInfoWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _TopPosterWidget(),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
+        const _TopPosterWidget(),
+        const Padding(
+          padding: EdgeInsets.all(20.0),
           child: _MovieNameWidget(),
         ),
-        _ScoreWidget(),
-        _SummeryWidget(),
+        const _ScoreWidget(),
+        const _SummeryWidget(),
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: _OverviewWidget(),
+          child: _overviewWidget(),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
+        const Padding(
+          padding: EdgeInsets.all(10.0),
           child: _DescriptionWidget(),
         ),
-        SizedBox(height: 30),
-        _PeopleWidgets(),
+        const SizedBox(height: 30),
+        const _PeopleWidgets(),
       ],
     );
   }
 
-  Text _OverviewWidget() {
-    return Text(
+  Text _overviewWidget() {
+    return const Text(
       'Overview',
       style: TextStyle(
         color: Colors.white,
@@ -50,7 +50,7 @@ class _DescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return const Text(
       'An elite Navy SEAL uncovers an international conspiracy while seeking justice for the murder of his pregnant wife.',
       style: TextStyle(
         color: Colors.white,
@@ -66,7 +66,7 @@ class _TopPosterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       children: [
         Image(image: AssetImage(AppImages.topHeader)),
         Positioned(
@@ -88,7 +88,7 @@ class _MovieNameWidget extends StatelessWidget {
     return RichText(
       maxLines: 3,
       textAlign: TextAlign.center,
-      text: TextSpan(
+      text: const TextSpan(
         children: [
           TextSpan(
             text: 'Tom Clancy`s Without Remorse',
@@ -120,7 +120,7 @@ class _ScoreWidget extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () {},
-          child: Row(
+          child: const Row(
             children: [
               SizedBox(
                 width: 40,
@@ -142,7 +142,7 @@ class _ScoreWidget extends StatelessWidget {
         Container(width: 1, height: 15, color: Colors.grey),
         TextButton(
           onPressed: () {},
-          child: Row(
+          child: const Row(
             children: [
               Icon(Icons.play_arrow),
               Text('Play Trailer'),
@@ -159,10 +159,10 @@ class _SummeryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
+    return const ColoredBox(
       color: Color.fromRGBO(22, 21, 25, 1.0),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 70),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
         child: Text(
           'R, 04/29/2021 (US) 1h49m Action, Adventure, Thriller, War',
           maxLines: 3,
@@ -183,17 +183,17 @@ class _PeopleWidgets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nameStyle = TextStyle(
+    const nameStyle = TextStyle(
       color: Colors.white,
       fontSize: 16,
       fontWeight: FontWeight.w400,
     );
-    final jobTilteStyle = TextStyle(
+    const jobTilteStyle = TextStyle(
       color: Colors.white,
       fontSize: 16,
       fontWeight: FontWeight.w400,
     );
-    return Column(
+    return const Column(
       children: [
         Row(
           mainAxisSize: MainAxisSize.max,
