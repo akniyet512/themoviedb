@@ -44,36 +44,9 @@ class AuthModel extends ChangeNotifier {
       }
       _isAuthProgress = false;
       await _sessionDataProvider.setSessionId(sessionId).whenComplete(() async {
-        await Navigator.of(context).pushReplacementNamed(MainNavigationRouteNames.mainScreen);
+        await Navigator.of(context)
+            .pushReplacementNamed(MainNavigationRouteNames.mainScreen);
       });
     }
-  }
-}
-
-class AuthProvider extends InheritedNotifier {
-  final AuthModel model;
-
-  const AuthProvider({
-    super.key,
-    required Widget child,
-    required this.model,
-  }) : super(
-          child: child,
-          notifier: model,
-        );
-
-  static AuthProvider? watch(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<AuthProvider>();
-  }
-
-  static AuthProvider? read(BuildContext context) {
-    final Widget? widget =
-        context.getElementForInheritedWidgetOfExactType<AuthProvider>()?.widget;
-    return widget is AuthProvider ? widget : null;
-  }
-
-  @override
-  bool updateShouldNotify(covariant AuthProvider oldWidget) {
-    return true;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/library/widgets/inherited/provider.dart';
 import 'package:themoviedb/ui/theme/app_button_style.dart';
 import 'package:themoviedb/ui/widgets/auth/auth_model.dart';
 
@@ -74,7 +75,7 @@ class _FormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthModel? model = AuthProvider.watch(context)?.model;
+    final AuthModel? model = NotifierProvider.read<AuthModel>(context);
     const TextStyle textStyle = TextStyle(
       fontSize: 16,
       color: Color(0xFF212529),
@@ -133,7 +134,7 @@ class _AuthButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const Color color = Color(0xFF01B4E4);
-    final AuthModel? model = AuthProvider.watch(context)?.model;
+    final AuthModel? model = NotifierProvider.watch<AuthModel>(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 30),
       child: ElevatedButton(
@@ -171,7 +172,7 @@ class _ErrorMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? errorMessage =
-        AuthProvider.watch(context)?.model.errorMessage;
+        NotifierProvider.watch<AuthModel>(context)?.errorMessage;
     return errorMessage == null
         ? Container()
         : Padding(
