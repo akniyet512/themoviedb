@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:themoviedb/resources/resources.dart';
+import 'package:themoviedb/ui/navigation/main_navigation.dart';
 
 class Movie {
   final int id;
@@ -164,11 +165,13 @@ class _MovieListWidgetState extends State<MovieListWidget> {
     _searchController.addListener(_searchMovies);
   }
 
-  void _onMovieTap(int index) {
+  Future<void> _onMovieTap(int index) async {
     final id = _movies[index].id;
-    Navigator.of(context).pushNamed(
-      '/main_screen/movie_details',
-      arguments: id,
+    await Navigator.of(context).pushNamed(
+      MainNavigationRouteNames.movieDetails,
+      arguments: {
+        "movieId": id,
+      },
     );
   }
 
@@ -212,7 +215,8 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                               const SizedBox(height: 20),
                               Text(
                                 movie.title,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -240,7 +244,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
-                      onTap: () => _onMovieTap(index),
+                      onTap: () async => await _onMovieTap(index),
                     ),
                   ),
                 ],

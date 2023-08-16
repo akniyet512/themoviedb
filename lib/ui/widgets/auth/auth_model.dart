@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:themoviedb/domain/api_client/api_client.dart';
 import 'package:themoviedb/domain/data_providers/session_data_provider.dart';
+import 'package:themoviedb/ui/navigation/main_navigation.dart';
 
 class AuthModel extends ChangeNotifier {
   final TextEditingController loginTextController = TextEditingController();
@@ -43,7 +44,7 @@ class AuthModel extends ChangeNotifier {
       }
       _isAuthProgress = false;
       await _sessionDataProvider.setSessionId(sessionId).whenComplete(() async {
-        await Navigator.of(context).pushNamed("/main_screen");
+        await Navigator.of(context).pushReplacementNamed(MainNavigationRouteNames.mainScreen);
       });
     }
   }
