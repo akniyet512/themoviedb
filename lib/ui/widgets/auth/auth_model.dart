@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:themoviedb/domain/api_client/api_client.dart';
 import 'package:themoviedb/domain/data_providers/session_data_provider.dart';
@@ -35,14 +33,25 @@ class AuthModel extends ChangeNotifier {
           username: loginTextController.text,
           password: passwordTextController.text,
         );
-      } catch (e) {
-        log(e.toString());
-        _errorMessage = "Wrong login or password!";
-        _isAuthProgress = false;
+      } on ApiClientException catch (e) {
+        switch (e.type) {
+          case ApiClientExceptionType.network:
+            _errorMessage =
+                "Server is unavailable! Check your internet connection.";
+            break;
+          case ApiClientExceptionType.auth:
+            _errorMessage = "Wrong login or password!";
+            break;
+          default:
+            _errorMessage = "Server is unavailable!";
+            break;
+        }
+      } 
+      _isAuthProgress = false;
+      if (_errorMessage != null) {
         notifyListeners();
         return;
       }
-      _isAuthProgress = false;
       await _sessionDataProvider.setSessionId(sessionId).whenComplete(() async {
         await Navigator.of(context)
             .pushReplacementNamed(MainNavigationRouteNames.mainScreen);
