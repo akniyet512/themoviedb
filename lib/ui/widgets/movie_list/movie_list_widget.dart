@@ -105,6 +105,7 @@ class MovieListWidget extends StatelessWidget {
               fillColor: Colors.white.withAlpha(235),
               border: const OutlineInputBorder(),
             ),
+            onChanged: model.searchMovie,
           ),
         ),
       ],

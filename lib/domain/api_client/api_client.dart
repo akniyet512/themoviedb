@@ -114,6 +114,27 @@ class ApiClient {
     return result;
   }
 
+  Future<PopularMovieResponse> searchMovie({
+    required int page,
+    required String locale,
+    required String query,
+  }) async {
+    parser(dynamic json) {
+      final PopularMovieResponse response =
+          PopularMovieResponse.fromJson(json as Map<String, dynamic>);
+      return response;
+    }
+
+    final Uri url = Uri.parse(
+        "$_host/search/movie?api_key=$_apiKey&language=$locale&page=$page&query=$query&include_adult=true");
+
+    final result = _get(
+      url,
+      parser,
+    );
+    return result;
+  }
+
   Future<T> _get<T>(
     Uri url,
     T Function(dynamic json) parser,
