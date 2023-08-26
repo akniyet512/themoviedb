@@ -22,8 +22,9 @@ class MovieListWidget extends StatelessWidget {
           itemCount: model.movies.length,
           itemExtent: 163,
           itemBuilder: (BuildContext context, int index) {
+            model.showMovieAtIndex(index);
             final Movie movie = model.movies[index];
-            String imageUrl = ApiClient.imageUrl(movie.posterPath!);
+            final String imageUrl = ApiClient.imageUrl(movie.posterPath!);
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Stack(

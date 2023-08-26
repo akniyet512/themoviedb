@@ -6,16 +6,28 @@ import 'package:themoviedb/ui/navigation/main_navigation.dart';
 
 class MovieListModel extends ChangeNotifier {
   final ApiClient _apiClient = ApiClient();
-
+  int _currentPage = 0;
+  int _totalPage = 1;
+  bool _isLoadingInProgress = false;
   final List<Movie> _movies = [];
 
   List<Movie> get movies => List.unmodifiable(_movies);
 
   Future<void> loadMovies() async {
-    final PopularMovieResponse moviesResponse =
-        await _apiClient.popularMovie(page: 1, locale: "ru-RU");
-    _movies.addAll(moviesResponse.movies);
-    notifyListeners();
+    if (_isLoadingInProgress || _currentPage >= _totalPage) return;
+    _isLoadingInProgress = true;
+    final int nextPage = _currentPage + 1;
+    try {
+      final PopularMovieResponse moviesResponse =
+          await _apiClient.popularMovie(page: nextPage, locale: "ru-RU");
+      _movies.addAll(moviesResponse.movies);
+      _currentPage = moviesResponse.page;
+      _totalPage = moviesResponse.totalPages;
+      _isLoadingInProgress = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoadingInProgress = false;
+    }
   }
 
   void onMovieTap(BuildContext context, {required int index}) {
@@ -24,5 +36,10 @@ class MovieListModel extends ChangeNotifier {
       MainNavigationRouteNames.movieDetails,
       arguments: {"id": id},
     );
+  }
+
+  Future<void> showMovieAtIndex(int index) async {
+    if (index < _movies.length - 1) return;
+    await loadMovies();
   }
 }
