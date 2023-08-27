@@ -4,6 +4,7 @@ import 'package:themoviedb/ui/widgets/auth/auth_model.dart';
 import 'package:themoviedb/ui/widgets/auth/auth_widget.dart';
 import 'package:themoviedb/ui/widgets/main_screen/main_screen_model.dart';
 import 'package:themoviedb/ui/widgets/main_screen/main_screen_widget.dart';
+import 'package:themoviedb/ui/widgets/movie_details/movie_details_model.dart';
 import 'package:themoviedb/ui/widgets/movie_details/movie_details_widget.dart';
 
 abstract class MainNavigationRouteNames {
@@ -35,7 +36,10 @@ class MainNavigation {
       case MainNavigationRouteNames.movieDetails:
         final int movieId = args["movieId"] is int ? args["movieId"] : 0;
         return MaterialPageRoute(
-          builder: (context) => MovieDetailsWidget(movieId: movieId),
+          builder: (context) => NotifierProvider(
+            model: MovieDetailsModel(movieId),
+            child: const MovieDetailsWidget(),
+          ),
           settings: RouteSettings(name: "${routeSettings.name}/$movieId"),
         );
       default:

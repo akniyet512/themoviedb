@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:themoviedb/domain/entity/movie_details.dart';
 import 'package:themoviedb/domain/entity/popular_movie_response.dart';
 
 enum ApiClientExceptionType {
@@ -135,11 +136,30 @@ class ApiClient {
     return result;
   }
 
+  Future<MovieDetails> movieDetails({
+    required int movieId,
+    required String locale,
+  }) async {
+    parser(dynamic json) {
+      final MovieDetails response =
+          MovieDetails.fromJson(json as Map<String, dynamic>);
+      return response;
+    }
+
+    final Uri url =
+        Uri.parse("$_host/movie/$movieId?api_key=$_apiKey&language=$locale");
+    final result = _get(
+      url,
+      parser,
+    );
+    return result;
+  }
+
   Future<T> _get<T>(
     Uri url,
     T Function(dynamic json) parser,
   ) async {
-    try {
+    // try {
       final HttpClientRequest request = await _client.getUrl(url);
 
       final HttpClientResponse response = await request.close();
@@ -152,13 +172,13 @@ class ApiClient {
       _validateResponse(response, json);
       final T result = parser(json);
       return result;
-    } on SocketException {
-      throw ApiClientException(ApiClientExceptionType.network);
-    } on ApiClientException {
-      rethrow;
-    } catch (e) {
-      throw ApiClientException(ApiClientExceptionType.other);
-    }
+    // } on SocketException {
+    //   throw ApiClientException(ApiClientExceptionType.network);
+    // } on ApiClientException {
+    //   rethrow;
+    // } catch (e) {
+    //   throw ApiClientException(ApiClientExceptionType.other);
+    // }
   }
 
   Future<T> _post<T>(

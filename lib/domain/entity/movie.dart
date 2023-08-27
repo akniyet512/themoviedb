@@ -44,7 +44,7 @@ class Movie {
       voteCount: json["vote_count"],
       video: json["video"],
       voteAvarage: json["vote_avarage"],
-      releaseDate: _releaseDateFromString(json["release_date"]),
+      releaseDate: releaseDateFromString(json["release_date"]),
       posterPath: json["poster_path"],
       backdropPath: json["backdrop_path"],
     );
@@ -69,7 +69,7 @@ class Movie {
     };
   }
 
-  static DateTime? _releaseDateFromString(String? rawDate) {
+  static DateTime? releaseDateFromString(String? rawDate) {
     if (rawDate == null || rawDate.isEmpty) {
       return null;
     }

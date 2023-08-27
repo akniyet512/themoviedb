@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/library/widgets/inherited/provider.dart';
 import 'package:themoviedb/ui/widgets/movie_details/movie_details_main_info_widget.dart';
 import 'package:themoviedb/ui/widgets/movie_details/movie_details_main_screen_cast_widget.dart';
+import 'package:themoviedb/ui/widgets/movie_details/movie_details_model.dart';
 
 class MovieDetailsWidget extends StatefulWidget {
-  final int movieId;
-
-  const MovieDetailsWidget({
-    Key? key,
-    required this.movieId,
-  }) : super(key: key);
+  const MovieDetailsWidget({Key? key}) : super(key: key);
 
   @override
   State createState() => _MovieDetailsWidgetState();
@@ -16,11 +13,15 @@ class MovieDetailsWidget extends StatefulWidget {
 
 class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    NotifierProvider.read<MovieDetailsModel>(context)?.setupLocale(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tom Clancy`s Without Remorse'),
-      ),
+      appBar: AppBar(title: const _TitleWidget()),
       body: ColoredBox(
         color: const Color.fromRGBO(24, 23, 27, 1.0),
         child: ListView(
@@ -32,5 +33,16 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
         ),
       ),
     );
+  }
+}
+
+class _TitleWidget extends StatelessWidget {
+  const _TitleWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final MovieDetailsModel? model =
+        NotifierProvider.watch<MovieDetailsModel>(context);
+    return Text(model?.movieDetails?.title ?? "Loading...");
   }
 }
