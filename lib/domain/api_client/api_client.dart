@@ -147,7 +147,7 @@ class ApiClient {
     }
 
     final Uri url =
-        Uri.parse("$_host/movie/$movieId?api_key=$_apiKey&language=$locale");
+        Uri.parse("$_host/movie/$movieId?api_key=$_apiKey&language=$locale&append_to_response=credits");
     final result = _get(
       url,
       parser,

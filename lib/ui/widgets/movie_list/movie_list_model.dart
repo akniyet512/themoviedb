@@ -41,7 +41,7 @@ class MovieListModel extends ChangeNotifier {
     final int nextPage = _currentPage + 1;
     try {
       final PopularMovieResponse moviesResponse =
-          await _loadMovies(page: nextPage, locale: "ru-RU");
+          await _loadMovies(page: nextPage, locale: "en-UK");
       _movies.addAll(moviesResponse.movies);
       _currentPage = moviesResponse.page;
       _totalPage = moviesResponse.totalPages;

@@ -1,4 +1,5 @@
 import 'package:themoviedb/domain/entity/movie.dart';
+import 'package:themoviedb/domain/entity/movie_details_credits.dart';
 
 class MovieDetails {
   final String? backdropPath;
@@ -24,8 +25,9 @@ class MovieDetails {
   final String status;
   final String title;
   final bool video;
-  final double? voteAvarage;
+  final double voteAverage;
   final int voteCount;
+  final MovieDetailsCredits credits;
 
   MovieDetails({
     this.backdropPath,
@@ -51,8 +53,9 @@ class MovieDetails {
     required this.status,
     required this.title,
     required this.video,
-     this.voteAvarage,
+    required this.voteAverage,
     required this.voteCount,
+    required this.credits,
   });
   factory MovieDetails.fromJson(Map<String, dynamic> json) {
     return MovieDetails(
@@ -89,8 +92,10 @@ class MovieDetails {
       status: json["status"],
       title: json["title"],
       video: json["video"],
-      voteAvarage: json["vote_avarage"],
+      voteAverage: json["vote_average"],
       voteCount: json["vote_count"],
+      credits:
+          MovieDetailsCredits.fromJson(json["credits"] as Map<String, dynamic>),
     );
   }
 
@@ -122,8 +127,9 @@ class MovieDetails {
       "status": status,
       "title": title,
       "video": video,
-      "vote_avarage": voteAvarage,
+      "vote_avarage": voteAverage,
       "vote_count": voteCount,
+      "credits": credits.toJson(),
     };
   }
 }
