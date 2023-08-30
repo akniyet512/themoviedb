@@ -38,6 +38,7 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   json_annotation: ^4.8.1
   intl: ^0.18.1
+  youtube_player_flutter: ^8.1.2
   
 
 dev_dependencies:

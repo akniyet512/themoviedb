@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:themoviedb/domain/api_client/api_client.dart';
 import 'package:themoviedb/domain/entity/movie_details_credits.dart';
+import 'package:themoviedb/domain/entity/movie_details_videos.dart';
 import 'package:themoviedb/library/widgets/inherited/provider.dart';
+import 'package:themoviedb/ui/navigation/main_navigation.dart';
 import 'package:themoviedb/ui/widgets/elements/radial_percent_widget.dart';
 import 'package:themoviedb/ui/widgets/movie_details/movie_details_model.dart';
 
@@ -217,6 +219,15 @@ class _ScoreWidget extends StatelessWidget {
                 ?.movieDetails
                 ?.voteAverage ??
             0;
+    final List<MovieDetailsVideosResult>? trailers =
+        NotifierProvider.watch<MovieDetailsModel>(context)
+            ?.movieDetails
+            ?.videos
+            .results
+            .where((element) =>
+                element.type == "Trailer" && element.site == "YouTube")
+            .toList();
+    final String? trailerKey = trailers?.first.key;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -243,7 +254,10 @@ class _ScoreWidget extends StatelessWidget {
         ),
         Container(width: 1, height: 15, color: Colors.grey),
         TextButton(
-          onPressed: () {},
+          onPressed: () => Navigator.of(context).pushNamed(
+            MainNavigationRouteNames.movieDetailsTrailer,
+            arguments: {"youtubeKey": trailerKey},
+          ),
           child: const Row(
             children: [
               Icon(Icons.play_arrow),

@@ -6,11 +6,13 @@ import 'package:themoviedb/ui/widgets/main_screen/main_screen_model.dart';
 import 'package:themoviedb/ui/widgets/main_screen/main_screen_widget.dart';
 import 'package:themoviedb/ui/widgets/movie_details/movie_details_model.dart';
 import 'package:themoviedb/ui/widgets/movie_details/movie_details_widget.dart';
+import 'package:themoviedb/ui/widgets/movie_trailer/movie_trailer_widget.dart';
 
 abstract class MainNavigationRouteNames {
   static const String auth = "auth";
   static const String mainScreen = "/";
   static const String movieDetails = "/movie-details";
+  static const String movieDetailsTrailer = "/movie-details/trailer";
 }
 
 class MainNavigation {
@@ -41,6 +43,12 @@ class MainNavigation {
             child: const MovieDetailsWidget(),
           ),
           settings: RouteSettings(name: "${routeSettings.name}/$movieId"),
+        );
+      case MainNavigationRouteNames.movieDetailsTrailer:
+        final String youtubeKey = args["youtubeKey"] is String ? args["youtubeKey"] : "";
+        return MaterialPageRoute(
+          builder: (context) => MovieTrailerWidget(youtubeKey: youtubeKey),
+          settings: RouteSettings(name: "${routeSettings.name}/$youtubeKey"),
         );
       default:
         return MaterialPageRoute(
