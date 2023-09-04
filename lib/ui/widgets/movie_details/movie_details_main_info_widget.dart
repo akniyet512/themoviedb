@@ -169,6 +169,18 @@ class _TopPosterWidget extends StatelessWidget {
               bottom: 20,
               child: Image.network(ApiClient.imageUrl(posterPath)),
             ),
+          Positioned(
+            top: 5,
+            right: 5,
+            child: IconButton(
+              onPressed: () async => await model?.toggleFavorite(),
+              icon: Icon(
+                model?.isFavorite == true
+                    ? Icons.favorite
+                    : Icons.favorite_outline,
+              ),
+            ),
+          ),
         ],
       ),
     );

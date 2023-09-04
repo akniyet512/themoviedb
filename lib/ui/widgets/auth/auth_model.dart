@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:themoviedb/domain/api_client/api_client.dart';
 import 'package:themoviedb/domain/data_providers/session_data_provider.dart';
@@ -28,11 +30,13 @@ class AuthModel extends ChangeNotifier {
       _isAuthProgress = true;
       notifyListeners();
       String? sessionId;
+      int? accountId;
       try {
         sessionId = await _apiClient.auth(
           username: loginTextController.text,
           password: passwordTextController.text,
         );
+        accountId = await _apiClient.getAccountInfo(sessionId: sessionId);
       } on ApiClientException catch (e) {
         switch (e.type) {
           case ApiClientExceptionType.network:
@@ -46,16 +50,18 @@ class AuthModel extends ChangeNotifier {
             _errorMessage = "Server is unavailable!";
             break;
         }
-      } 
+      }
       _isAuthProgress = false;
       if (_errorMessage != null) {
         notifyListeners();
         return;
       }
-      await _sessionDataProvider.setSessionId(sessionId).whenComplete(() async {
-        await Navigator.of(context)
-            .pushReplacementNamed(MainNavigationRouteNames.mainScreen);
-      });
+      await _sessionDataProvider.setSessionId(sessionId);
+      await _sessionDataProvider.setAccountId(accountId);
+      if (context.mounted) {
+        unawaited(Navigator.of(context)
+            .pushReplacementNamed(MainNavigationRouteNames.mainScreen));
+      }
     }
   }
 }

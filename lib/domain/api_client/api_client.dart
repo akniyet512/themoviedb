@@ -10,6 +10,22 @@ enum ApiClientExceptionType {
   other,
 }
 
+enum ApiClientMediaType {
+  movie,
+  tv,
+}
+
+extension MediaTypeAsString on ApiClientMediaType {
+  String asString() {
+    switch (this) {
+      case ApiClientMediaType.movie:
+        return "movie";
+      case ApiClientMediaType.tv:
+        return "tv";
+    }
+  }
+}
+
 class ApiClientException implements Exception {
   final ApiClientExceptionType type;
 
@@ -146,8 +162,60 @@ class ApiClient {
       return response;
     }
 
+    final Uri url = Uri.parse(
+        "$_host/movie/$movieId?api_key=$_apiKey&language=$locale&append_to_response=credits,videos");
+    final result = _get(
+      url,
+      parser,
+    );
+    return result;
+  }
+
+  Future<bool> isFavourite({
+    required int movieId,
+    required String sessionId,
+  }) async {
+    parser(dynamic json) {
+      return (json as Map<String, dynamic>)["favorite"] as bool;
+    }
+
+    final Uri url = Uri.parse(
+        "$_host/movie/$movieId/account_states?api_key=$_apiKey&session_id=$sessionId");
+    final result = _get(
+      url,
+      parser,
+    );
+    return result;
+  }
+
+  Future<int> markAsFavorite({
+    required int accountId,
+    required String sessionId,
+    required ApiClientMediaType mediaType,
+    required int mediaId,
+    required bool isFavorite,
+  }) async {
+    parser(dynamic json) {
+      return 1;
+    }
+
+    final Uri url = Uri.parse(
+        "$_host/account/$accountId/favorite?api_key=$_apiKey&session_id=$sessionId");
+    final result = await _post(url, parser, {
+      "media_type": mediaType.asString(),
+      "media_id": mediaId,
+      "favorite": isFavorite,
+    });
+    return result;
+  }
+
+  Future<int> getAccountInfo({required String sessionId}) async {
+    parser(dynamic json) {
+      return (json as Map<String, dynamic>)["id"] as int;
+    }
+
     final Uri url =
-        Uri.parse("$_host/movie/$movieId?api_key=$_apiKey&language=$locale&append_to_response=credits,videos");
+        Uri.parse("$_host/account?api_key=$_apiKey&session_id=$sessionId");
     final result = _get(
       url,
       parser,
@@ -159,7 +227,7 @@ class ApiClient {
     Uri url,
     T Function(dynamic json) parser,
   ) async {
-    // try {
+    try {
       final HttpClientRequest request = await _client.getUrl(url);
 
       final HttpClientResponse response = await request.close();
@@ -172,13 +240,13 @@ class ApiClient {
       _validateResponse(response, json);
       final T result = parser(json);
       return result;
-    // } on SocketException {
-    //   throw ApiClientException(ApiClientExceptionType.network);
-    // } on ApiClientException {
-    //   rethrow;
-    // } catch (e) {
-    //   throw ApiClientException(ApiClientExceptionType.other);
-    // }
+    } on SocketException {
+      throw ApiClientException(ApiClientExceptionType.network);
+    } on ApiClientException {
+      rethrow;
+    } catch (e) {
+      throw ApiClientException(ApiClientExceptionType.other);
+    }
   }
 
   Future<T> _post<T>(
